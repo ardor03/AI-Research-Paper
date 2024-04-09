@@ -38,6 +38,6 @@ d = 3
 threshold = 100
 kappa = 0.1
 cbc = CascadingBuffersCounter(epsilon, d, threshold, kappa)
-x = [0, 1, 0, 1, 0, 1, 0, 1, 0, 1]  # Example input stream
+x = [0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1]  # Example input stream
 cbc.update(x)
-print("Output:", cbc.get_output())
+print("Output:", abs(cbc.get_output()))
