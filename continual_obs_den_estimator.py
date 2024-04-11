@@ -1,6 +1,6 @@
 import random
 
-class ContinualObservationDensityEstimator:
+class ContObsDenEst:
     def __init__(self, epsilon, alpha, beta):
         self.epsilon = epsilon
         self.alpha = alpha
@@ -15,16 +15,16 @@ class ContinualObservationDensityEstimator:
         else:
             bxt = self.table[xt]
             if bxt == 0:
-                yt = random.choices([0, 1], weights=[0.5 + self.epsilon, 0.5 - self.epsilon])[0]
+                yt = random.choices([0, 1], weights=[1 + self.epsilon + self.epsilon*self.epsilon , 1])[0]
             else:
-                yt = random.choices([0, 1], weights=[0.5 - self.epsilon, 0.5 + self.epsilon])[0]
+                yt = random.choices([0, 1], weights=[1 , 1 + self.epsilon + self.epsilon*self.epsilon])[0]
         
         # Update the counter
         self.counter += yt
 
         # Update the table entry for xt
         if xt not in self.table:
-            self.table[xt] = random.choices([0, 1], weights=[0.5 + self.epsilon**2 / 2, 0.5 - self.epsilon**2 / 2])[0]
+            self.table[xt] = random.choices([0, 1], weights=[0.5 + self.epsilon / 4, 0.5 - self.epsilon / 4])[0]
 
         return self.counter
 
@@ -34,11 +34,11 @@ if __name__ == "__main__":
     alpha = 0.01   # Accuracy parameter
     beta = 0.05    # Probability parameter
 
-    estimator = ContinualObservationDensityEstimator(epsilon, alpha, beta)
+    estimator = ContObsDenEst(epsilon, alpha, beta)
 
     # Update the estimator with some values
     for _ in range(10):
-        count = estimator.update('some_value')
+        count = estimator.update(random.choice(['⊥', '1']))
 
     # Get the current count
     print("Current count:", count)

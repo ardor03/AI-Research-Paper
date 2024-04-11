@@ -7,13 +7,12 @@ class DensityEstimator:
         self.alpha = alpha
         self.beta = beta
         self.M = []
-        self.table = {}
+        self.table = {} #dictionary declaration
         self.m = None
 
     def initialize(self, X):
         self.m = self.polylog(1/self.epsilon, 1/self.alpha, np.log(1/self.beta))
-        self.m = min(self.m, len(X))  # Ensure self.m is not larger than the length of X
-        self.m = max(self.m, 0)  # Ensure self.m is not negative
+        self.m = min(self.m, len(X))
         self.M = random.sample(X, self.m)
         self.table = {x: random.choice([0, 1]) for x in self.M}
 
@@ -24,10 +23,13 @@ class DensityEstimator:
     def compute_density(self):
         theta = sum(self.table[x] for x in self.M) / self.m
         laplace_noise = np.random.laplace(0, 1/(self.epsilon * self.m))
-        return 4 * (theta - 1/2) / self.epsilon + laplace_noise
+        return (4 * (theta - 1/2) / self.epsilon) + laplace_noise
+
+    def compute_theta(self):
+        theta = sum(self.table[x] for x in self.M) / self.m
+        return theta
 
     def polylog(self, *args):
-        # Placeholder for polylogarithmic function
         return 10
 
 # Example usage:
@@ -40,20 +42,13 @@ X = [1, 2, 3, 4, 5]  # Example universe of elements
 density_estimator = DensityEstimator(epsilon, alpha, beta)
 density_estimator.initialize(X)
 
-# Update the density estimator with some values
+#Example Usage
 density_estimator.update(1)
-density_estimator.update(2)
 density_estimator.update(3)
+density_estimator.update(2)
 density_estimator.update(1)
-density_estimator.update(2)
 density_estimator.update(3)
-density_estimator.update(1)
-density_estimator.update(2)
-density_estimator.update(3)
-density_estimator.update(1)
-density_estimator.update(2)
-density_estimator.update(3)
-
 # Compute the density value
 density = abs(density_estimator.compute_density())
+print("Theta value:", density_estimator.compute_theta())
 print("Density value:", density)

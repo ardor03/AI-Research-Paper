@@ -8,7 +8,7 @@ class CascadingBuffersCounter:
         self.threshold = threshold
         self.kappa = kappa
         self.accs = [self.generate_laplace_noise(1/epsilon) for _ in range(d)]
-        self.buffers = [0] * d
+        self.buffers = [0] * d #array declaration
         self.updates = [0] * d
 
     def generate_laplace_noise(self, scale):
@@ -30,7 +30,7 @@ class CascadingBuffersCounter:
                 self.flush_buffer(0)
 
     def get_output(self):
-        return sum(self.accs)
+        return sum(self.accs) 
 
 # Example usage:
 epsilon = 0.1
@@ -38,6 +38,6 @@ d = 3
 threshold = 100
 kappa = 0.1
 cbc = CascadingBuffersCounter(epsilon, d, threshold, kappa)
-x = [0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1]  # Example input stream
+x = [0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1]  # Example input stream
 cbc.update(x)
 print("Output:", abs(cbc.get_output()))
