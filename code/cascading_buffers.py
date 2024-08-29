@@ -24,7 +24,9 @@ class CascadingBuffersCounter:
 
     def update(self, x):
         for i in range(len(x)):
-            self.buffers[0] += x[i] + self.generate_laplace_noise(1/self.epsilon)
+            # Convert character to integer
+            num = int(x[i])
+            self.buffers[0] += num + self.generate_laplace_noise(1/self.epsilon)
             self.updates[0] += 1
             if self.buffers[0] >= self.threshold or self.updates[0] == (self.threshold * self.epsilon / (4 * self.kappa)) ** 2:
                 self.flush_buffer(0)
@@ -38,6 +40,9 @@ d = 3
 threshold = 100
 kappa = 0.1
 cbc = CascadingBuffersCounter(epsilon, d, threshold, kappa)
-x = [0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1]  # Example input stream
+
+with open('inputbin.txt', 'r') as file:
+    x = list(map(int, file.read()))  # Convert characters to integers
+
 cbc.update(x)
 print("Output:", abs(cbc.get_output()))

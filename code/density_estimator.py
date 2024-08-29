@@ -36,18 +36,20 @@ class DensityEstimator:
 epsilon = 0.1
 alpha = 0.01
 beta = 0.05
-X = [1, 2, 3, 4, 5]  # Example universe of elements
+
+# Read characters from file and remove duplicates
+with open('input.txt', 'r') as file:
+    X = list(set(file.read()))
 
 # Initialize the density estimator
 density_estimator = DensityEstimator(epsilon, alpha, beta)
 density_estimator.initialize(X)
 
-#Example Usage
-density_estimator.update(1)
-density_estimator.update(3)
-density_estimator.update(2)
-density_estimator.update(1)
-density_estimator.update(3)
+# Update the density estimator with each character in input.txt
+with open('input.txt', 'r') as file:
+    for char in file.read():
+        density_estimator.update(char)
+
 # Compute the density value
 density = abs(density_estimator.compute_density())
 print("Theta value:", density_estimator.compute_theta())
